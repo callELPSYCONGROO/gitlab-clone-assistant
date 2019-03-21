@@ -41,7 +41,8 @@ public class GitlabApiUtil {
 					throw WorkFlowException.build("认证参数错误，账号密码认证时，认证参数必须输入两个", WorkFlowEnum.AUTHTYPE);
 				}
 				try {
-					gitLabApi = GitLabApi.login(GitLabApi.ApiVersion.V3, url, auths[0], auths[1]);
+//					gitLabApi = GitLabApi.login(GitLabApi.ApiVersion.V3, url, auths[0], auths[1]);
+					gitLabApi = GitLabApi.oauth2Login(url, auths[0], auths[1]);
 				} catch (GitLabApiException e) {
 					throw WorkFlowException.build(e.getMessage() + "\n" + "账号密码连接异常...", WorkFlowEnum.GITLAB_URL);
 				}
