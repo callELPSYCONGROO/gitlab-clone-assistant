@@ -1,12 +1,11 @@
 package com.wuhenjian.tool.gitlabcloneassistant.gitlab;
 
-import com.wuhenjian.tool.gitlabcloneassistant.workflow.exception.WorkFlowException;
 import com.wuhenjian.tool.gitlabcloneassistant.util.CommonUtil;
 import com.wuhenjian.tool.gitlabcloneassistant.workflow.WorkFlowEnum;
+import com.wuhenjian.tool.gitlabcloneassistant.workflow.exception.WorkFlowException;
 import org.gitlab4j.api.GitLabApi;
 import org.gitlab4j.api.GitLabApiException;
 import org.gitlab4j.api.ProjectApi;
-import org.gitlab4j.api.models.Group;
 import org.gitlab4j.api.models.Project;
 
 import java.util.List;
@@ -74,14 +73,13 @@ public class GitlabApiUtil {
 			}
 			return projectList.stream()
 					// 使用命名空间过滤
-					.filter(project -> Objects.equals(project.getNamespace().getName(), namespace))
+					.filter(project -> Objects.equals(project.getNamespace().getFullPath(), namespace))
 					// 获取到每个工程的下载地址
 					.map(project -> {
-						switch (urlToRepoEnum) {
-							case SSH:
-								return project.getSshUrlToRepo();
-							default:
-								return project.getHttpUrlToRepo();
+						if (urlToRepoEnum == UrlToRepoEnum.SSH) {
+							return project.getSshUrlToRepo();
+						} else {
+							return project.getHttpUrlToRepo();
 						}
 					})
 					.collect(Collectors.toList());

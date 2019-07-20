@@ -17,7 +17,7 @@ import java.util.List;
 public class StartMain {
 
 	public static void main(String[] args) {
-		System.out.println("欢迎使用Gitlab下载助手！");
+		System.out.println("欢迎使用Gitlab下载助手2.0！");
 		System.out.println("【使用回车键完成输入】");
 		// 输入业务对象
 		InputService inputService = new InputService();
@@ -38,6 +38,7 @@ public class StartMain {
 		List<String> gitUrlList = GitlabApiUtil.getGitUrl(gitLabApi, namespace, projectName, urlToRepoEnum);
 		// 没有符合条件的项目，则结束
 		if (CommonUtil.collectionIsBlank(gitUrlList)) {
+			System.out.println("没有对应的工程，结束进程");
 			return;
 		}
 
@@ -45,5 +46,7 @@ public class StartMain {
 		CmdService cmdService = new CmdService();
 		// 下载工程
 		cmdService.download(gitUrlList, namespace);
+
+		System.out.println("全部完成，进程结束...");
 	}
 }

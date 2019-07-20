@@ -6,7 +6,7 @@
 
     <groupId>com.wuhenjian.tool</groupId>
     <artifactId>gitlab-clone-assistant</artifactId>
-    <version>1.0</version>
+    <version>2.1</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,6 +30,11 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
     </dependencies>
 
     <build>

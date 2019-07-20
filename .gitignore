@@ -45,3 +45,6 @@ Temporary Items
 .idea
 *.iml
 target
+
+.settings
+.*

@@ -14,10 +14,15 @@ Gitlab下载助手
 
 * jre8
 
-* 已安装git，并配置好环境变量（测试方法：打开cmd，执行代码```git version```）
+* 已安装git（目前支持9.3/11.8），并配置好环境变量（测试方法：打开cmd，执行代码```git version```）
+
+    > 需要运行gitlab-9.3请使用[1.0](https://github.com/callELPSYCONGROO/gitlab-clone-assistant/releases/tag/1.0)
+      
+    > 需要运行gitlab-11.8.1请使用[2.0](https://github.com/callELPSYCONGROO/gitlab-clone-assistant/releases/tag/2.0)
 
 * 运行账号能够在本地新建文件夹（测试方法：打开cmd，执行代码```md test```）
 
+* 最新版目前支持指定完整命名空间下载
 
 ## 运行方法
 

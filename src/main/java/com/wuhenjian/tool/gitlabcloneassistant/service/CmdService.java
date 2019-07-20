@@ -3,11 +3,9 @@ package com.wuhenjian.tool.gitlabcloneassistant.service;
 import com.wuhenjian.tool.gitlabcloneassistant.cmd.CmdUtil;
 import com.wuhenjian.tool.gitlabcloneassistant.util.CommonUtil;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 無痕剑
@@ -20,28 +18,27 @@ public class CmdService {
 	 */
 	public void download(List<String> gitUrlList, String folderName) {
 		// 创建文件夹
-		CmdUtil.createFolder(folderName);
-		List<Callable<String>> callableList = new ArrayList<>();
-		// 下载过程封装为线程对象
-		gitUrlList.forEach(url -> callableList.add(() -> CmdUtil.downloadGitlabRepository(folderName, url)));
-		List<Future<String>> futureList = new ArrayList<>();
-		// 执行线程
-		callableList.forEach(callable -> futureList.add(CommonUtil.DOWNLOAD_THREAD_POOL.submit(callable)));
-		// 是否全部完成
-		boolean hasNotDone = futureList.stream().anyMatch(future -> !future.isDone());
-		while (hasNotDone) {
-			hasNotDone = futureList.stream().anyMatch(future -> !future.isDone());
-		}
-		// 全部完成后，输出结果
-		futureList.forEach(future -> {
-			try {
-				System.out.println(future.get());
-			} catch (InterruptedException | ExecutionException e) {
-				e.printStackTrace();
-			}
-		});
+		CmdUtil.createDir(folderName);
 
-		// 关闭线程池
+		CountDownLatch countDownLatch = new CountDownLatch(gitUrlList.size());
+
+		// 执行线程
+		gitUrlList.forEach(url -> CommonUtil.DOWNLOAD_THREAD_POOL.execute(() -> {
+			try {
+				CmdUtil.downloadGitlabRepository(folderName, url);
+			} catch (Exception e) {
+				System.out.println("下载" + url + "失败：" + e.getMessage());
+			} finally {
+				countDownLatch.countDown();
+			}
+		}));
+
+		try {
+			countDownLatch.await(9, TimeUnit.MINUTES);
+		} catch (InterruptedException e) {
+			System.out.println("这么久都没下载完成，检查一下链接吧");
+		}
+
 		CommonUtil.DOWNLOAD_THREAD_POOL.shutdown();
 	}
 }
