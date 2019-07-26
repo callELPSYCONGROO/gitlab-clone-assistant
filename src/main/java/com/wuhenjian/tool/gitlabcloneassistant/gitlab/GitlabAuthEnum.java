@@ -13,15 +13,18 @@ import java.util.Objects;
 public enum GitlabAuthEnum {
 
 	/** ssh token */
-	TOKEN("1"),
+	TOKEN("1", "Token认证"),
 	/** 账号密码 */
-	USERNAME_PASSWORD("2"),
+	USERNAME_PASSWORD("2", "账号密码"),
 	;
 
-	private String code;
+	private final String code;
 
-	GitlabAuthEnum(String code) {
+	private final String msg;
+
+	GitlabAuthEnum(String code, String msg) {
 		this.code = code;
+		this.msg = msg;
 	}
 
 	public static GitlabAuthEnum getEnumByCode(String code) {

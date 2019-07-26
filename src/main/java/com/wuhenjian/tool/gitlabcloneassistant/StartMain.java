@@ -25,15 +25,19 @@ public class StartMain {
 		String gitlabUrl = inputService.getGitlabUrl();
 		// 获取认证类型，AUTHTYPE
 		GitlabAuthEnum authType = inputService.getAuthType();
+		System.out.println("选择[" + authType.getMsg() + "]登录");
 		// 获取认证参数，AUTH_PARAMS
 		String[] authParam = inputService.getAuthParam();
 		// 通过输入获取gitLabApi实例，GITLAB_API
 		GitLabApi gitLabApi = GitlabApiUtil.connect(gitlabUrl, authType, authParam);
 		// 获取项目过滤条件，SCREENING_CONDITIONS
 		String namespace = inputService.getNamespace();
+		System.out.println("命名空间名称：" + namespace);
 		String projectName = inputService.getProjectName();
+		System.out.println("项目过滤条件为：" + projectName);
 		// 获取项目下载方式，DOWNLOAD_TYPE
 		UrlToRepoEnum urlToRepoEnum = inputService.getDownloadUrlType();
+		System.out.println("项目下载协议：" + urlToRepoEnum.name());
 		// 获取下载链接，GIT_CLONE_HOLDER
 		List<String> gitUrlList = GitlabApiUtil.getGitUrl(gitLabApi, namespace, projectName, urlToRepoEnum);
 		// 没有符合条件的项目，则结束
